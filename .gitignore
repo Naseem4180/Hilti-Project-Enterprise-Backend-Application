@@ -1,21 +1,23 @@
-# Java
-/target/
-*.log
-*.class
+# Maven
+backend/target/
+target/
 
 # Node
-/node_modules/
-/dist/
-/out/
-/npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
+node_modules/
 
 # IDE
-/.idea/
-*.iml
-*.ipr
-*.iws
+.idea/
+.vscode/
+
+# Logs
+*.log
+
+# Build files
+*.jar
+*.war
 
 # OS
 .DS_Store
+
+# Environment
+.env
