@@ -1,9 +1,11 @@
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import api from '../../services/api';
 import { useAuth } from '../../context/AuthContext';
 
 export default function AdminDashboard() {
   const { logout, user } = useAuth();
+  const navigate = useNavigate();
   const [bookings, setBookings] = useState([]);
 
   useEffect(() => {
@@ -16,7 +18,10 @@ export default function AdminDashboard() {
     <div className="container">
       <div className="navbar">
         <h1>Admin Dashboard</h1>
-        <button className="button" onClick={logout}>Logout</button>
+        <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
+          <button className="button" onClick={() => navigate('/admin/registrations')}>Customer Registrations</button>
+          <button className="button" onClick={logout}>Logout</button>
+        </div>
       </div>
       <div className="card">
         <p>Welcome {user?.email}. This view shows all booking records.</p>

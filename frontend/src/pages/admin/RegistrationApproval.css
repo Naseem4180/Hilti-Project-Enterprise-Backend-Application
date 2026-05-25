@@ -1,0 +1,289 @@
+.approval-container {
+  padding: 30px;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.approval-header {
+  margin-bottom: 30px;
+}
+
+.approval-header h1 {
+  font-size: 28px;
+  color: #333;
+  margin: 0 0 5px 0;
+}
+
+.approval-header p {
+  color: #666;
+  margin: 0;
+}
+
+.tabs {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 25px;
+  border-bottom: 2px solid #eee;
+}
+
+.tab-button {
+  padding: 12px 20px;
+  border: none;
+  background: none;
+  color: #666;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  border-bottom: 3px solid transparent;
+  transition: all 0.3s ease;
+}
+
+.tab-button:hover {
+  color: #333;
+}
+
+.tab-button.active {
+  color: #667eea;
+  border-bottom-color: #667eea;
+}
+
+.message {
+  padding: 12px 15px;
+  border-radius: 4px;
+  margin-bottom: 20px;
+  font-size: 14px;
+}
+
+.message-success {
+  background-color: #d4edda;
+  color: #155724;
+  border: 1px solid #c3e6cb;
+}
+
+.message-error {
+  background-color: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
+}
+
+.loading,
+.no-data {
+  text-align: center;
+  padding: 40px;
+  color: #666;
+  font-size: 16px;
+}
+
+.registrations-list {
+  display: grid;
+  gap: 20px;
+}
+
+.registration-card {
+  border: 1px solid #eee;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  transition: box-shadow 0.3s ease;
+}
+
+.registration-card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+  padding: 20px;
+  background: #f9f9f9;
+  border-bottom: 1px solid #eee;
+}
+
+.card-header h3 {
+  font-size: 16px;
+  color: #333;
+  margin: 0 0 5px 0;
+}
+
+.card-header .company {
+  font-size: 13px;
+  color: #666;
+  margin: 0;
+}
+
+.status-badge {
+  display: inline-block;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  background: #e3f2fd;
+  color: #1976d2;
+  text-transform: uppercase;
+}
+
+.card-body {
+  padding: 20px;
+}
+
+.info-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 0;
+  border-bottom: 1px solid #f0f0f0;
+  font-size: 14px;
+}
+
+.info-row:last-child {
+  border-bottom: none;
+}
+
+.info-row .label {
+  font-weight: 600;
+  color: #666;
+  min-width: 120px;
+}
+
+.info-row .value {
+  color: #333;
+  text-align: right;
+  flex: 1;
+}
+
+.info-row.rejection-reason {
+  background: #fef5f5;
+  padding: 10px;
+  border-radius: 4px;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.info-row.rejection-reason .value {
+  text-align: left;
+  color: #c53030;
+}
+
+.card-actions {
+  padding: 15px 20px;
+  background: #f9f9f9;
+  border-top: 1px solid #eee;
+  display: flex;
+  gap: 10px;
+}
+
+.btn {
+  padding: 10px 15px;
+  border: none;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-approve {
+  background: #10b981;
+  color: white;
+  flex: 1;
+}
+
+.btn-approve:hover {
+  background: #059669;
+}
+
+.btn-reject {
+  background: #ef4444;
+  color: white;
+  flex: 1;
+}
+
+.btn-reject:hover {
+  background: #dc2626;
+}
+
+.rejection-form {
+  padding: 15px 20px;
+  background: #fef5f5;
+  border-top: 1px solid #fde0e0;
+}
+
+.rejection-textarea {
+  width: 100%;
+  min-height: 80px;
+  padding: 10px;
+  border: 1px solid #fde0e0;
+  border-radius: 4px;
+  font-size: 14px;
+  font-family: inherit;
+  resize: vertical;
+}
+
+.rejection-textarea:focus {
+  outline: none;
+  border-color: #ef4444;
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+}
+
+.rejection-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.btn-small {
+  padding: 8px 12px;
+  font-size: 13px;
+}
+
+.btn-confirm {
+  background: #ef4444;
+  color: white;
+  flex: 1;
+}
+
+.btn-confirm:hover {
+  background: #dc2626;
+}
+
+.btn-cancel {
+  background: #e5e7eb;
+  color: #333;
+  flex: 1;
+}
+
+.btn-cancel:hover {
+  background: #d1d5db;
+}
+
+@media (max-width: 768px) {
+  .approval-container {
+    padding: 15px;
+  }
+
+  .approval-header h1 {
+    font-size: 22px;
+  }
+
+  .tabs {
+    flex-wrap: wrap;
+  }
+
+  .card-header {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .info-row {
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  .info-row .value {
+    text-align: left;
+  }
+
+  .card-actions {
+    flex-direction: column;
+  }
+}

@@ -17,7 +17,7 @@ export default function Login() {
       if (user.role === 'ROLE_CUSTOMER') navigate('/customer');
       if (user.role === 'ROLE_ADMIN') navigate('/admin');
       if (user.role === 'ROLE_FE') navigate('/fe');
-      if (user.role === 'ROLE_MANAGER') navigate('/admin');
+      if (user.role === 'ROLE_MANAGER') navigate('/manager');
     } catch (err) {
       setError('Email or password incorrect.');
     }
@@ -50,6 +50,9 @@ export default function Login() {
         </form>
         <p style={{ marginTop: 16 }}>
           New to Hilti? <Link to="/register">Register</Link>
+        </p>
+        <p style={{ marginTop: 12, fontSize: '14px' }}>
+          Want to register as a customer? <Link to="/register-customer">Apply here</Link>
         </p>
       </div>
     </div>
