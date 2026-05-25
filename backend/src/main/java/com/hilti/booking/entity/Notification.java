@@ -15,9 +15,13 @@ public class Notification {
     private User user;
 
     private String type;
+
     @Lob
     private String message;
+
+    @Column(name = "sent_at")
     private LocalDateTime sentAt = LocalDateTime.now();
+
     private String channel;
 
     public Notification() {

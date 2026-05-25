@@ -8,5 +8,7 @@ import java.util.List;
 
 public interface SlotRepository extends JpaRepository<Slot, Long> {
     List<Slot> findBySlotDateAndSlotType(LocalDate slotDate, SlotType slotType);
+    List<Slot> findBySlotDateAndBookedCountLessThan(LocalDate slotDate, Integer bookedCount);
+    List<Slot> findBySlotDateAndSlotTypeAndBookedCountLessThan(LocalDate slotDate, SlotType slotType, Integer bookedCount);
     List<Slot> findBySlotDate(LocalDate slotDate);
 }

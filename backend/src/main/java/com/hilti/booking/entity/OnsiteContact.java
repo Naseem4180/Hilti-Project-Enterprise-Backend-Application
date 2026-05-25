@@ -10,7 +10,10 @@ public class OnsiteContact {
     private Long id;
 
     private String name;
+
+    @Column(name = "contact_number")
     private String contactNumber;
+
     private String email;
 
     @ManyToOne(fetch = FetchType.LAZY)

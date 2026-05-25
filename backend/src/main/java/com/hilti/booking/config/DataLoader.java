@@ -1,6 +1,11 @@
 package com.hilti.booking.config;
 
-import com.hilti.booking.entity.*;
+import com.hilti.booking.entity.AnchorCapacityConfig;
+import com.hilti.booking.entity.Role;
+import com.hilti.booking.entity.Slot;
+import com.hilti.booking.entity.SlotType;
+import com.hilti.booking.entity.User;
+import com.hilti.booking.entity.CustomerType;
 import com.hilti.booking.repository.AnchorCapacityConfigRepository;
 import com.hilti.booking.repository.SlotRepository;
 import com.hilti.booking.repository.UserRepository;
@@ -23,6 +28,7 @@ public class DataLoader {
         return args -> {
             if (!userRepository.existsByEmail("admin@hilti.com")) {
                 User admin = new User();
+                admin.setUsername("admin");
                 admin.setFullName("Hilti Admin");
                 admin.setEmail("admin@hilti.com");
                 admin.setPasswordHash(passwordEncoder.encode("Admin123!"));
@@ -32,16 +38,18 @@ public class DataLoader {
             }
             if (!userRepository.existsByEmail("customer@hilti.com")) {
                 User customer = new User();
+                customer.setUsername("customer");
                 customer.setFullName("Hilti Customer");
                 customer.setEmail("customer@hilti.com");
                 customer.setPasswordHash(passwordEncoder.encode("Customer123!"));
                 customer.setRole(Role.ROLE_CUSTOMER);
-                customer.setCustomerType("ROUTINE");
+                customer.setCustomerType(CustomerType.ROUTINE);
                 customer.setActive(true);
                 userRepository.save(customer);
             }
             if (!userRepository.existsByEmail("fe@hilti.com")) {
                 User fe = new User();
+                fe.setUsername("fe");
                 fe.setFullName("Field Executive");
                 fe.setEmail("fe@hilti.com");
                 fe.setPasswordHash(passwordEncoder.encode("Fe123!"));
@@ -51,6 +59,7 @@ public class DataLoader {
             }
             if (!userRepository.existsByEmail("manager@hilti.com")) {
                 User manager = new User();
+                manager.setUsername("manager");
                 manager.setFullName("Hilti Manager");
                 manager.setEmail("manager@hilti.com");
                 manager.setPasswordHash(passwordEncoder.encode("Manager123!"));
@@ -60,20 +69,26 @@ public class DataLoader {
             }
 
             if (capacityConfigRepository.count() == 0) {
-                capacityConfigRepository.saveAll(List.of(
+                List<AnchorCapacityConfig> configs = List.of(
                         createConfig("10mm", 8),
                         createConfig("12mm", 6),
                         createConfig("16mm", 4)
-                ));
+                );
+                @SuppressWarnings("null")
+                Iterable<AnchorCapacityConfig> saveConfigs = configs;
+                capacityConfigRepository.saveAll(saveConfigs);
             }
 
             if (slotRepository.count() == 0) {
                 LocalDate today = LocalDate.now();
-                slotRepository.saveAll(List.of(
+                List<Slot> slots = List.of(
                         createSlot(today, LocalTime.of(9, 0), SlotType.ROUTINE, 10, 0),
                         createSlot(today, LocalTime.of(11, 0), SlotType.ACCOUNT_PRIORITY, 10, 0),
                         createSlot(today.plusDays(1), LocalTime.of(14, 0), SlotType.NORMAL, 10, 0)
-                ));
+                );
+                @SuppressWarnings("null")
+                Iterable<Slot> saveSlots = slots;
+                slotRepository.saveAll(saveSlots);
             }
         };
     }

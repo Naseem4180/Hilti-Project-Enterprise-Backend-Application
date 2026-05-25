@@ -11,10 +11,14 @@ public class Slot {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "slot_date")
     private LocalDate slotDate;
+
+    @Column(name = "slot_time")
     private LocalTime slotTime;
 
     @Enumerated(EnumType.STRING)
+    @Column(name = "slot_type")
     private SlotType slotType;
 
     private Integer capacity;

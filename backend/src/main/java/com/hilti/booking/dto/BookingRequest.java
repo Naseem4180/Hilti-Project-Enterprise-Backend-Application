@@ -12,10 +12,19 @@ public class BookingRequest {
     private String bookingType;
     private String slotType;
     private String testingType;
+    private Long slotId;
     private LocalDateTime slotDateTimeStart;
     private LocalDateTime slotDateTimeEnd;
     private AnchorDetailRequest anchorDetail;
     private List<OnsiteContactRequest> onsiteContacts;
+
+    public Long getSlotId() {
+        return slotId;
+    }
+
+    public void setSlotId(Long slotId) {
+        this.slotId = slotId;
+    }
 
     public String getSoNumber() {
         return soNumber;

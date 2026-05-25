@@ -14,12 +14,16 @@ public class Cancellation {
     @JoinColumn(name = "booking_id")
     private Booking booking;
 
+    @Column(name = "cancelled_by")
     private String cancelledBy;
 
     @Enumerated(EnumType.STRING)
+    @Column(name = "cancel_type")
     private CancelType cancelType;
 
     private String reason;
+
+    @Column(name = "cancelled_at")
     private LocalDateTime cancelledAt = LocalDateTime.now();
 
     public Cancellation() {

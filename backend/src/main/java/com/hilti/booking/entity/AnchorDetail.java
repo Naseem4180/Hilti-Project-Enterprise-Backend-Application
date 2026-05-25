@@ -13,10 +13,19 @@ public class AnchorDetail {
     @JoinColumn(name = "booking_id")
     private Booking booking;
 
+    @Column(name = "anchor_category")
     private String anchorCategory;
+
+    @Column(name = "anchor_type")
     private String anchorType;
+
+    @Column(name = "anchor_size")
     private String anchorSize;
+
+    @Column(name = "anchor_quantity")
     private Integer anchorQuantity;
+
+    @Column(name = "proof_load_value")
     private String proofLoadValue;
 
     public AnchorDetail() {

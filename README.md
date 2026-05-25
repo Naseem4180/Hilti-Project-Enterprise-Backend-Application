@@ -11,14 +11,21 @@ This repository contains a complete working MVP for the Hilti Singapore Anchor T
 
 ### Backend
 
-1. Install Java 17+ and MySQL.
-2. Create a MySQL database named `hilti_booking`.
-3. Update `backend/src/main/resources/application.yml` with your database credentials.
-4. Run:
+The backend runs by default using an embedded H2 database, so MySQL is not required for local development.
+
+1. Install Java 17+.
+2. Run:
    ```bash
    cd backend
    mvn clean spring-boot:run
    ```
+
+If you want to use MySQL instead, update the `mysql` profile in `backend/src/main/resources/application.yml` and start with:
+
+```bash
+cd backend
+mvn -Dspring-boot.run.profiles=mysql clean spring-boot:run
+```
 
 ### Frontend
 

@@ -1,10 +1,19 @@
 package com.hilti.booking.dto;
 
 public class RegisterRequest {
+    private String username;
     private String fullName;
     private String email;
     private String password;
     private String customerType;
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
 
     public String getFullName() {
         return fullName;

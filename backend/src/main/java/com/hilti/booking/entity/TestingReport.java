@@ -15,11 +15,18 @@ public class TestingReport {
     private Booking booking;
 
     @Lob
+    @Column(name = "report_data")
     private String reportData;
 
+    @Column(name = "fe_signature")
     private String feSignature;
+
+    @Column(name = "customer_signature")
     private String customerSignature;
+
+    @Column(name = "completed_at")
     private LocalDateTime completedAt;
+
     private boolean synced;
 
     public TestingReport() {

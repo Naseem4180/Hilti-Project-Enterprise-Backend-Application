@@ -9,7 +9,10 @@ public class AnchorCapacityConfig {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "anchor_size")
     private String anchorSize;
+
+    @Column(name = "max_pieces_per_2h")
     private Integer maxPiecesPer2h;
 
     public AnchorCapacityConfig() {
