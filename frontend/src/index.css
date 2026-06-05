@@ -1,8 +1,19 @@
+/* Global Styles */
+@import './styles/Global.css';
+@import './styles/Sidebar.css';
+@import './styles/Header.css';
+@import './styles/Login.css';
+@import './styles/AdminDashboard.css';
+@import './styles/CustomerDashboard.css';
+@import './styles/RegistrationApproval.css';
+
 body {
   margin: 0;
-  font-family: Inter, system-ui, sans-serif;
-  background: #f7f7fb;
+  font-family: 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: #1f2937;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 button {
