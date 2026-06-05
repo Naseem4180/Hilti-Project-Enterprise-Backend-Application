@@ -1,0 +1,623 @@
+/* Registration Approval Page Styles */
+
+.registration-main {
+  flex: 1;
+  overflow-y: auto;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.registration-layout {
+  display: flex;
+  height: 100%;
+  gap: 0;
+}
+
+/* Left Panel */
+.registration-left {
+  width: 320px;
+  border-right: 2px solid #e5e7eb;
+  background: white;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.tabs-header {
+  padding: 20px;
+  border-bottom: 2px solid #f3f4f6;
+}
+
+.tabs-header h2 {
+  margin: 0;
+  font-size: 1.2rem;
+  color: #1f2937;
+}
+
+.tabs-container {
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  border-bottom: 2px solid #f3f4f6;
+}
+
+.registration-tab {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  background: white;
+  border: 2px solid transparent;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: #6b7280;
+}
+
+.registration-tab:hover {
+  background: #f9fafb;
+  border-color: #e5e7eb;
+}
+
+.registration-tab.active {
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+  border-color: #667eea;
+  color: #667eea;
+  font-weight: 600;
+}
+
+.tab-icon {
+  font-size: 1.3rem;
+}
+
+.tab-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex: 1;
+}
+
+.tab-label {
+  font-weight: 600;
+}
+
+.tab-count {
+  background: #f3f4f6;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 0.85rem;
+  color: #6b7280;
+  font-weight: 700;
+}
+
+.registration-tab.active .tab-count {
+  background: #667eea;
+  color: white;
+}
+
+/* Registrations List */
+.registrations-list {
+  flex: 1;
+  overflow-y: auto;
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.loading-state,
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  color: #9ca3af;
+  gap: 12px;
+}
+
+.spinner {
+  width: 32px;
+  height: 32px;
+  border: 3px solid #f3f4f6;
+  border-top-color: #667eea;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.empty-icon {
+  font-size: 2.5rem;
+}
+
+.registration-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  background: white;
+  border: 2px solid transparent;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.registration-item:hover {
+  background: #f9fafb;
+  border-color: #e5e7eb;
+  transform: translateX(4px);
+}
+
+.registration-item.active {
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.15) 0%, rgba(118, 75, 162, 0.15) 100%);
+  border-color: #667eea;
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.15);
+}
+
+.item-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.item-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.item-name {
+  font-weight: 600;
+  color: #1f2937;
+  font-size: 0.95rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.item-company {
+  font-size: 0.8rem;
+  color: #6b7280;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.item-email {
+  font-size: 0.75rem;
+  color: #9ca3af;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.item-status {
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  flex-shrink: 0;
+}
+
+.item-status.pending {
+  background: rgba(245, 158, 11, 0.15);
+  color: #92400e;
+}
+
+.item-status.approved {
+  background: rgba(16, 185, 129, 0.15);
+  color: #047857;
+}
+
+.item-status.rejected {
+  background: rgba(239, 68, 68, 0.15);
+  color: #991b1b;
+}
+
+/* Right Panel */
+.registration-right {
+  flex: 1;
+  padding: 24px;
+  overflow-y: auto;
+  background: #f9fafb;
+  display: flex;
+  flex-direction: column;
+}
+
+.alert {
+  padding: 12px 16px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  animation: slideDown 0.3s ease;
+}
+
+.alert-success {
+  background: rgba(16, 185, 129, 0.1);
+  border: 1px solid rgba(16, 185, 129, 0.3);
+  color: #047857;
+}
+
+.alert-error {
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  color: #991b1b;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.registration-details {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  background: white;
+  border-radius: 14px;
+  padding: 24px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+/* Details Header */
+.details-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding-bottom: 20px;
+  border-bottom: 2px solid #f3f4f6;
+}
+
+.header-avatar {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.header-info {
+  flex: 1;
+}
+
+.header-info h2 {
+  margin: 0;
+  color: #1f2937;
+  font-size: 1.3rem;
+}
+
+.company-name {
+  margin: 4px 0;
+  color: #6b7280;
+  font-size: 0.95rem;
+}
+
+.status-badge {
+  display: inline-block;
+  margin-top: 8px;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.status-badge.pending {
+  background: rgba(245, 158, 11, 0.15);
+  color: #92400e;
+}
+
+.status-badge.approved {
+  background: rgba(16, 185, 129, 0.15);
+  color: #047857;
+}
+
+.status-badge.rejected {
+  background: rgba(239, 68, 68, 0.15);
+  color: #991b1b;
+}
+
+/* Details Body */
+.details-body {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.details-section {
+  padding: 16px;
+  background: #f9fafb;
+  border-radius: 10px;
+  border-left: 4px solid #667eea;
+}
+
+.details-section h3 {
+  margin: 0 0 14px 0;
+  color: #1f2937;
+  font-size: 1rem;
+}
+
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 12px;
+}
+
+.info-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.info-label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.info-value {
+  font-size: 0.95rem;
+  color: #1f2937;
+  font-weight: 500;
+  word-break: break-word;
+}
+
+.rejection-info {
+  border-left-color: #ef4444;
+  background: rgba(239, 68, 68, 0.05);
+}
+
+.rejection-info h3 {
+  color: #991b1b;
+}
+
+.rejection-info p {
+  margin: 0;
+  color: #7f1d1d;
+  line-height: 1.6;
+}
+
+.approval-info {
+  border-left-color: #10b981;
+  background: rgba(16, 185, 129, 0.05);
+}
+
+.approval-info h3 {
+  color: #047857;
+}
+
+/* Actions */
+.details-actions {
+  display: flex;
+  gap: 12px;
+  padding-top: 12px;
+  border-top: 2px solid #f3f4f6;
+}
+
+.btn-action {
+  flex: 1;
+  padding: 12px 16px;
+  border: none;
+  border-radius: 10px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.btn-action.approve {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  color: white;
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+}
+
+.btn-action.approve:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
+}
+
+.btn-action.reject {
+  background: #f3f4f6;
+  color: #ef4444;
+  border: 2px solid #fecaca;
+}
+
+.btn-action.reject:hover:not(:disabled) {
+  background: #fee2e2;
+}
+
+.btn-action:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+/* Rejection Form */
+.rejection-form {
+  padding: 16px;
+  background: rgba(239, 68, 68, 0.05);
+  border: 2px solid rgba(239, 68, 68, 0.2);
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.rejection-textarea {
+  padding: 12px;
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 0.95rem;
+  color: #1f2937;
+  resize: vertical;
+  min-height: 100px;
+  background: white;
+}
+
+.rejection-textarea:focus {
+  outline: none;
+  border-color: #ef4444;
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+}
+
+.form-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.btn-form {
+  flex: 1;
+  padding: 10px 12px;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 0.9rem;
+}
+
+.btn-form.confirm {
+  background: #ef4444;
+  color: white;
+}
+
+.btn-form.confirm:hover:not(:disabled) {
+  background: #dc2626;
+}
+
+.btn-form.cancel {
+  background: white;
+  border: 1px solid #e5e7eb;
+  color: #6b7280;
+}
+
+.btn-form.cancel:hover:not(:disabled) {
+  background: #f9fafb;
+  border-color: #d1d5db;
+}
+
+.btn-form:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* No Selection */
+.no-selection {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 60px 20px;
+  color: #9ca3af;
+}
+
+.no-selection-icon {
+  font-size: 3rem;
+}
+
+.no-selection p {
+  margin: 0;
+  font-size: 1rem;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .registration-left {
+    width: 280px;
+  }
+
+  .info-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .registration-layout {
+    flex-direction: column;
+  }
+
+  .registration-left {
+    width: 100%;
+    max-height: 40%;
+    border-right: none;
+    border-bottom: 2px solid #e5e7eb;
+  }
+
+  .registration-right {
+    flex: 1;
+    padding: 16px;
+  }
+
+  .registrations-list {
+    flex-direction: row;
+    overflow-x: auto;
+    overflow-y: hidden;
+    gap: 8px;
+    padding: 8px;
+  }
+
+  .registration-item {
+    flex-direction: column;
+    min-width: 100px;
+    text-align: center;
+  }
+
+  .item-content {
+    display: none;
+  }
+
+  .details-header {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .details-actions {
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 480px) {
+  .registration-right {
+    padding: 12px;
+  }
+
+  .registration-details {
+    padding: 16px;
+    gap: 16px;
+  }
+
+  .info-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .header-info h2 {
+    font-size: 1.1rem;
+  }
+}

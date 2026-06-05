@@ -1,14 +1,19 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
+import Sidebar from '../../components/Sidebar';
+import Header from '../../components/Header';
 import api from '../../services/api';
-import './RegistrationApproval.css';
+import '../../styles/RegistrationApproval.css';
 
 export default function RegistrationApproval() {
+  const [sidebarOpen, setSidebarOpen] = useState(true);
   const [activeTab, setActiveTab] = useState('pending');
   const [registrations, setRegistrations] = useState([]);
+  const [selectedRegistration, setSelectedRegistration] = useState(null);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('');
+  const [messageType, setMessageType] = useState('');
   const [rejectionReason, setRejectionReason] = useState('');
-  const [selectedRegistrationId, setSelectedRegistrationId] = useState(null);
+  const [actionLoading, setActionLoading] = useState(false);
 
   useEffect(() => {
     fetchRegistrations();
@@ -19,188 +24,288 @@ export default function RegistrationApproval() {
     try {
       const endpoint = `/api/admin/registrations/${activeTab}`;
       const response = await api.get(endpoint);
-      setRegistrations(response.data || []);
+      const data = response.data || [];
+      setRegistrations(data);
+      setSelectedRegistration(data.length > 0 ? data[0] : null);
       setMessage('');
     } catch (error) {
-      setMessage('Failed to fetch registrations');
       setRegistrations([]);
+      setSelectedRegistration(null);
     } finally {
       setLoading(false);
     }
   };
 
-  const handleApprove = async (id) => {
-    if (window.confirm('Are you sure you want to approve this registration?')) {
-      try {
-        const response = await api.post(`/api/admin/registrations/${id}/approve`);
-        setMessage('Registration approved successfully!');
-        setTimeout(() => {
-          fetchRegistrations();
-          setMessage('');
-        }, 1000);
-      } catch (error) {
-        setMessage('Failed to approve registration');
-      }
-    }
+ const handleApprove = async () => {
+  if (!selectedRegistration) return;
+  if (!window.confirm('Approve this registration?')) return;
+
+  setActionLoading(true);
+
+  try {
+    await api.post(
+      `/api/admin/registrations/${selectedRegistration.id}/approve`
+    );
+
+    setMessageType('success');
+    setMessage('✅ Registration approved successfully!');
+
+    setTimeout(() => {
+      fetchRegistrations();
+      setMessage('');
+    }, 1500);
+
+  } catch (error) {
+    console.error('Approve Error:', error);
+    setMessageType('error');
+    setMessage('❌ Failed to approve registration');
+  } finally {
+    setActionLoading(false);
+  }
+};
+
+ const handleReject = async () => {
+  if (!selectedRegistration) return;
+
+  if (!rejectionReason.trim()) {
+    setMessageType('error');
+    setMessage('❌ Please enter a rejection reason');
+    return;
+  }
+
+  if (!window.confirm('Reject this registration?')) return;
+
+  setActionLoading(true);
+
+  try {
+    await api.post(
+      `/api/admin/registrations/${selectedRegistration.id}/reject?reason=${encodeURIComponent(rejectionReason)}`
+    );
+
+    setMessageType('success');
+    setMessage('✅ Registration rejected successfully!');
+    setRejectionReason('');
+
+    setTimeout(() => {
+      fetchRegistrations();
+      setMessage('');
+    }, 1500);
+
+  } catch (error) {
+    console.error('Reject Error:', error);
+    setMessageType('error');
+    setMessage('❌ Failed to reject registration');
+  } finally {
+    setActionLoading(false);
+  }
+};
+
+  const tabCounts = {
+    pending: registrations.filter(r => r.status === 'PENDING').length,
+    approved: registrations.filter(r => r.status === 'APPROVED').length,
+    rejected: registrations.filter(r => r.status === 'REJECTED').length
   };
 
-  const handleReject = async (id) => {
-    if (!rejectionReason.trim()) {
-      alert('Please enter a rejection reason');
-      return;
-    }
-    if (window.confirm('Are you sure you want to reject this registration?')) {
-      try {
-        const params = new URLSearchParams({ reason: rejectionReason });
-        await api.post(`/api/admin/registrations/${id}/reject?${params}`);
-        setMessage('Registration rejected successfully!');
-        setRejectionReason('');
-        setSelectedRegistrationId(null);
-        setTimeout(() => {
-          fetchRegistrations();
-          setMessage('');
-        }, 1000);
-      } catch (error) {
-        setMessage('Failed to reject registration');
-      }
-    }
+  const toggleSidebar = () => {
+    setSidebarOpen(!sidebarOpen);
   };
 
   return (
-    <div className="approval-container">
-      <div className="approval-header">
-        <h1>Customer Registration Approvals</h1>
-        <p>Manage customer registration requests</p>
-      </div>
+    <div className="dashboard-wrapper">
+      <Sidebar isOpen={sidebarOpen} toggleSidebar={toggleSidebar} />
+      <div className="dashboard-container">
+        <Header toggleSidebar={toggleSidebar} />
 
-      <div className="tabs">
-        <button
-          className={`tab-button ${activeTab === 'pending' ? 'active' : ''}`}
-          onClick={() => setActiveTab('pending')}
-        >
-          Pending ({registrations.length})
-        </button>
-        <button
-          className={`tab-button ${activeTab === 'approved' ? 'active' : ''}`}
-          onClick={() => setActiveTab('approved')}
-        >
-          Approved ({registrations.length})
-        </button>
-        <button
-          className={`tab-button ${activeTab === 'rejected' ? 'active' : ''}`}
-          onClick={() => setActiveTab('rejected')}
-        >
-          Rejected ({registrations.length})
-        </button>
-      </div>
-
-      {message && (
-        <div className={`message ${message.includes('success') ? 'message-success' : 'message-error'}`}>
-          {message}
-        </div>
-      )}
-
-      {loading ? (
-        <div className="loading">Loading registrations...</div>
-      ) : registrations.length === 0 ? (
-        <div className="no-data">No registrations found</div>
-      ) : (
-        <div className="registrations-list">
-          {registrations.map(registration => (
-            <div key={registration.id} className="registration-card">
-              <div className="card-header">
-                <div>
-                  <h3>{registration.firstName} {registration.lastName}</h3>
-                  <p className="company">{registration.companyName}</p>
-                </div>
-                <div className="status-badge">
-                  {registration.status}
-                </div>
+        <main className="registration-main">
+          <div className="registration-layout">
+            {/* Left Panel - Tabs */}
+            <div className="registration-left">
+              <div className="tabs-header">
+                <h2>👥 Registrations</h2>
               </div>
 
-              <div className="card-body">
-                <div className="info-row">
-                  <span className="label">Email:</span>
-                  <span className="value">{registration.email}</span>
-                </div>
-                <div className="info-row">
-                  <span className="label">Account Number:</span>
-                  <span className="value">{registration.accountNumber}</span>
-                </div>
-                <div className="info-row">
-                  <span className="label">Contact Number:</span>
-                  <span className="value">{registration.contactNumber}</span>
-                </div>
-                <div className="info-row">
-                  <span className="label">Submitted:</span>
-                  <span className="value">{new Date(registration.createdAt).toLocaleDateString()}</span>
-                </div>
-
-                {registration.rejectionReason && (
-                  <div className="info-row rejection-reason">
-                    <span className="label">Rejection Reason:</span>
-                    <span className="value">{registration.rejectionReason}</span>
-                  </div>
-                )}
-
-                {registration.approvedBy && (
-                  <div className="info-row">
-                    <span className="label">Approved By:</span>
-                    <span className="value">{registration.approvedBy}</span>
-                  </div>
-                )}
+              <div className="tabs-container">
+                {[
+                  { id: 'pending', label: 'Pending', icon: '⏳', count: registrations.filter(r => !r.status || r.status === 'PENDING').length },
+                  { id: 'approved', label: 'Approved', icon: '✅', count: registrations.filter(r => r.status === 'APPROVED').length },
+                  { id: 'rejected', label: 'Rejected', icon: '❌', count: registrations.filter(r => r.status === 'REJECTED').length }
+                ].map(tab => (
+                  <button
+                    key={tab.id}
+                    className={`registration-tab ${activeTab === tab.id ? 'active' : ''}`}
+                    onClick={() => setActiveTab(tab.id)}
+                  >
+                    <span className="tab-icon">{tab.icon}</span>
+                    <div className="tab-content">
+                      <span className="tab-label">{tab.label}</span>
+                      <span className="tab-count">{tab.count}</span>
+                    </div>
+                  </button>
+                ))}
               </div>
 
-              {activeTab === 'pending' && (
-                <div className="card-actions">
-                  <button
-                    className="btn btn-approve"
-                    onClick={() => handleApprove(registration.id)}
-                  >
-                    Approve
-                  </button>
-                  <button
-                    className="btn btn-reject"
-                    onClick={() => setSelectedRegistrationId(
-                      selectedRegistrationId === registration.id ? null : registration.id
-                    )}
-                  >
-                    Reject
-                  </button>
+              <div className="registrations-list">
+                {loading ? (
+                  <div className="loading-state">
+                    <div className="spinner"></div>
+                    <p>Loading...</p>
+                  </div>
+                ) : registrations.length === 0 ? (
+                  <div className="empty-state">
+                    <div className="empty-icon">📋</div>
+                    <p>No registrations</p>
+                  </div>
+                ) : (
+                  registrations.map(reg => (
+                    <div
+                      key={reg.id}
+                      className={`registration-item ${selectedRegistration?.id === reg.id ? 'active' : ''}`}
+                      onClick={() => setSelectedRegistration(reg)}
+                    >
+                      <div className="item-avatar">
+                        {(reg.firstName?.[0] || reg.email?.[0] || 'U').toUpperCase()}
+                      </div>
+                      <div className="item-content">
+                        <div className="item-name">{reg.firstName} {reg.lastName}</div>
+                        <div className="item-company">{reg.companyName}</div>
+                        <div className="item-email">{reg.email}</div>
+                      </div>
+                      <div className={`item-status ${reg.status?.toLowerCase() || 'pending'}`}>
+                        {reg.status || 'PENDING'}
+                      </div>
+                    </div>
+                  ))
+                )}
+              </div>
+            </div>
+
+            {/* Right Panel - Details */}
+            <div className="registration-right">
+              {message && (
+                <div className={`alert alert-${messageType}`}>
+                  {message}
                 </div>
               )}
 
-              {selectedRegistrationId === registration.id && activeTab === 'pending' && (
-                <div className="rejection-form">
-                  <textarea
-                    className="rejection-textarea"
-                    placeholder="Enter rejection reason..."
-                    value={rejectionReason}
-                    onChange={(e) => setRejectionReason(e.target.value)}
-                  />
-                  <div className="rejection-actions">
-                    <button
-                      className="btn btn-small btn-confirm"
-                      onClick={() => handleReject(registration.id)}
-                    >
-                      Confirm Rejection
-                    </button>
-                    <button
-                      className="btn btn-small btn-cancel"
-                      onClick={() => {
-                        setSelectedRegistrationId(null);
-                        setRejectionReason('');
-                      }}
-                    >
-                      Cancel
-                    </button>
+              {selectedRegistration ? (
+                <div className="registration-details">
+                  <div className="details-header">
+                    <div className="header-avatar">
+                      {(selectedRegistration.firstName?.[0] || selectedRegistration.email?.[0] || 'U').toUpperCase()}
+                    </div>
+                    <div className="header-info">
+                      <h2>{selectedRegistration.firstName} {selectedRegistration.lastName}</h2>
+                      <p className="company-name">{selectedRegistration.companyName}</p>
+                      <div className={`status-badge ${selectedRegistration.status?.toLowerCase() || 'pending'}`}>
+                        {selectedRegistration.status || 'PENDING'}
+                      </div>
+                    </div>
                   </div>
+
+                  <div className="details-body">
+                    <div className="details-section">
+                      <h3>📋 General Information</h3>
+                      <div className="info-grid">
+                        <div className="info-item">
+                          <span className="info-label">Email</span>
+                          <span className="info-value">{selectedRegistration.email}</span>
+                        </div>
+                        <div className="info-item">
+                          <span className="info-label">Contact Number</span>
+                          <span className="info-value">{selectedRegistration.contactNumber || 'N/A'}</span>
+                        </div>
+                        <div className="info-item">
+                          <span className="info-label">Account Number</span>
+                          <span className="info-value">{selectedRegistration.accountNumber || 'N/A'}</span>
+                        </div>
+                        <div className="info-item">
+                          <span className="info-label">Submitted Date</span>
+                          <span className="info-value">{new Date(selectedRegistration.createdAt || Date.now()).toLocaleDateString()}</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    {selectedRegistration.rejectionReason && (
+                      <div className="details-section rejection-info">
+                        <h3>❌ Rejection Reason</h3>
+                        <p>{selectedRegistration.rejectionReason}</p>
+                      </div>
+                    )}
+
+                    {(selectedRegistration.status === 'APPROVED' || selectedRegistration.approvedBy) && (
+                      <div className="details-section approval-info">
+                        <h3>✅ Approval Information</h3>
+                        <div className="info-grid">
+                          <div className="info-item">
+                            <span className="info-label">Approved By</span>
+                            <span className="info-value">{selectedRegistration.approvedBy || 'Admin'}</span>
+                          </div>
+                          <div className="info-item">
+                            <span className="info-label">Approval Date</span>
+                            <span className="info-value">{selectedRegistration.approvedDate ? new Date(selectedRegistration.approvedDate).toLocaleDateString() : 'N/A'}</span>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+
+                  {(selectedRegistration.status === 'PENDING' || !selectedRegistration.status) && (
+                    <div className="details-actions">
+                      <button
+                        className="btn-action approve"
+                        onClick={handleApprove}
+                        disabled={actionLoading}
+                      >
+                        {actionLoading ? '⏳ Processing...' : '✅ Approve'}
+                      </button>
+                      <button
+                        className="btn-action reject"
+                        onClick={() => setSelectedRegistration({ ...selectedRegistration, showRejectForm: !selectedRegistration.showRejectForm })}
+                      >
+                        ❌ Reject
+                      </button>
+                    </div>
+                  )}
+
+                  {selectedRegistration.showRejectForm && (
+                    <div className="rejection-form">
+                      <textarea
+                        placeholder="Enter rejection reason..."
+                        value={rejectionReason}
+                        onChange={(e) => setRejectionReason(e.target.value)}
+                        className="rejection-textarea"
+                      />
+                      <div className="form-actions">
+                        <button
+                          className="btn-form confirm"
+                          onClick={handleReject}
+                          disabled={actionLoading}
+                        >
+                          {actionLoading ? '⏳ Processing...' : 'Confirm Rejection'}
+                        </button>
+                        <button
+                          className="btn-form cancel"
+                          onClick={() => {
+                            setSelectedRegistration({ ...selectedRegistration, showRejectForm: false });
+                            setRejectionReason('');
+                          }}
+                        >
+                          Cancel
+                        </button>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              ) : (
+                <div className="no-selection">
+                  <div className="no-selection-icon">👈</div>
+                  <p>Select a registration from the left panel to view details</p>
                 </div>
               )}
             </div>
-          ))}
-        </div>
-      )}
+          </div>
+        </main>
+      </div>
     </div>
   );
 }

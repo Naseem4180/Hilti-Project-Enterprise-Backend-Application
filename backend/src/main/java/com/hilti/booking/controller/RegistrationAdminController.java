@@ -101,7 +101,7 @@ public class RegistrationAdminController {
 
         // Generate username and password
         String username = generateUsername(registration.getFirstName(), registration.getLastName());
-        String tempPassword = generateTempPassword();
+        String tempPassword = "Hilti@123";
 
         // Create user account
         User user = new User();
@@ -192,12 +192,5 @@ public class RegistrationAdminController {
         }
 
         return username;
-    }
-
-    /**
-     * GENERATE TEMPORARY PASSWORD
-     */
-    private String generateTempPassword() {
-        return UUID.randomUUID().toString().substring(0, 8).toUpperCase();
     }
 }
